@@ -14,6 +14,7 @@
 - `git clone https://github.com/mallocaholic/exemplo-raylib.git`
 - `cd exemplo-raylib`
 - `make all` 
+- `./nomedojogo`
 
 ## Windows:
 
