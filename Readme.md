@@ -51,4 +51,4 @@
 ### Games 
 
 - [Galeria de Jogos IP](https://galeria-de-jogos-monitoriaip.vercel.app/)
-- [The Bugger BETA](https://github.com/mallocaholic/DebugProject])
+- [The Bugger BETA](https://github.com/mallocaholic/DebugProject)
