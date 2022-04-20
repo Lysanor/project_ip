@@ -15,6 +15,7 @@
 - `cd exemplo-raylib`
 - `make all` 
 - `./nomedojogo`
+*** 
 
 ## Windows:
 
