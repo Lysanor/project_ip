@@ -15,6 +15,7 @@
 - `cd exemplo-raylib`
 - `make all` 
 - `./nomedojogo`
+
 *** 
 
 ## Windows:
@@ -33,3 +34,21 @@
 - Abra o Makefile com um editor de texto e atualize os endereços da RAYLIB_PATH e do COMPILER_PATH.
 - Digite no powershell (Shift + Botão Direito no diretório)  `mingw32-make PLATFORM=PLATFORM_DESKTOP`.
 - Para abrir o jogo, execute o `.exe`.
+
+***
+## Links úteis
+### Assets
+
+- [OpenGameArt](https://opengameart.org/)
+- [Itch.io](https://itch.io/game-assets/free)
+- [Gameart2D](https://www.gameart2d.com/freebies.html)
+- [Craftpix](https://craftpix.net/freebies/)
+
+### Raylib
+
+- [Raylib](https://www.raylib.com/) contém exemplos e etc.
+
+### Games 
+
+- [Galeria de Jogos IP](https://galeria-de-jogos-monitoriaip.vercel.app/)
+- [The Bugger BETA](https://github.com/mallocaholic/DebugProject])
