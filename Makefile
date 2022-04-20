@@ -24,10 +24,10 @@
 .PHONY: all clean
 
 # Define required raylib variables
-PROJECT_NAME       ?= TheBugger
+PROJECT_NAME       ?= GameName 
 RAYLIB_VERSION     ?= 3.8.0
 ## @TODO: Mude aqui para o caminho de onde está o raylib
-RAYLIB_PATH        ?= C:\Users\User\Documents\raylib-master
+RAYLIB_PATH        ?= PASTA RAYLIB
 
 # Define compiler path on Windows
 COMPILER_PATH      ?= C:/raylib/mingw/bin
