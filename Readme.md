@@ -48,7 +48,10 @@
 
 - [Raylib](https://www.raylib.com/) contém exemplos e etc.
 
-### Games 
+### Games Jam Passadas
 
 - [Galeria de Jogos IP](https://galeria-de-jogos-monitoriaip.vercel.app/)
 - [The Bugger BETA](https://github.com/mallocaholic/DebugProject)
+- [FighterMayCry](https://github.com/marcusvxf/FighterMayCry)
+- [NeedleKnight](https://github.com/MateusNeeves/NeedleKnight)
+- [++](https://github.com/luanbezerra/Projeto-IP)
