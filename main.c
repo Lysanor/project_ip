@@ -3,14 +3,22 @@
 #include <math.h>
 #include <stdlib.h>
 
-float d2(Vector2 a, Vector2 b) {
+
+void gameInterface() { 
+
+}
+
+float d2(Vector2 a, Vector2 b)
+{
     return ((a.x - b.x) * (a.x - b.x)) + ((a.y - b.y) * (a.y - b.y));
 }
 
-int main() {
+int main()
+{
     SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(0, 0, "raylib [core] example - mouse input");
-    if (!IsWindowFullscreen()) ToggleFullscreen();
+    if (!IsWindowFullscreen())
+        ToggleFullscreen();
 
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
@@ -25,7 +33,6 @@ int main() {
     InitAudioDevice();
     SetMasterVolume(0.2f);
     int playing = 0;
-
 
     printf("%f, %f\n", W2, H2);
 
@@ -43,23 +50,29 @@ int main() {
     char buf[500] = {0};
     float dprev = 0.0f;
 
-    while (!WindowShouldClose() && !IsKeyPressed(KEY_CAPS_LOCK)) {
+    //Movimentação
+    while (!WindowShouldClose() && !IsKeyPressed(KEY_CAPS_LOCK))
+    {
         double delta = GetTime() - time;
         time = GetTime();
 
-        if (IsKeyDown(KEY_W)) {
+        if (IsKeyDown(KEY_W))
+        {
             player.y -= pspeed * delta;
         }
 
-        if (IsKeyDown(KEY_S)) {
+        if (IsKeyDown(KEY_S))
+        {
             player.y += pspeed * delta;
         }
 
-        if (IsKeyDown(KEY_D)) {
+        if (IsKeyDown(KEY_D))
+        {
             player.x += pspeed * delta;
         }
 
-        if (IsKeyDown(KEY_A)) {
+        if (IsKeyDown(KEY_A))
+        {
             player.x -= pspeed * delta;
         }
 
@@ -69,7 +82,8 @@ int main() {
 
         float err = camd + (dDelta * 10.0f);
 
-        if (err > 80.0f) {
+        if (err > 80.0f)
+        {
             camera.target.x += ((player.x) - camera.target.x) * 0.005;
             camera.target.y += ((player.y) - camera.target.y) * 0.005;
         }
@@ -81,11 +95,11 @@ int main() {
 
         sprintf(buf, "%02.02f, cam: (%02.02f, %02.0f2), p (%02.02f, %02.02f)",
                 err, camera.target.x, camera.target.y, player.x, player.y);
-        if(playing) DrawText("Yes baby", 10, 50, 15, RED);
+        if (playing)
+            DrawText("Yes baby", 10, 50, 15, RED);
         DrawText(buf, 10, 10, 20, DARKGRAY);
 
         BeginMode2D(camera);
-
 
         DrawCircle(0, 0, 10, BLUE);
         DrawRectangle(player.x, player.y, 40, 40, RED);
@@ -98,31 +112,28 @@ int main() {
         DrawText("Este mundo é a sua tela, o código é a sua tinta.", 700, 10,
                  20, DARKGRAY);
 
-
         DrawTexture(ff_img, 1400, 100, WHITE);
         DrawText("Você pode usar imagens.", 1400, 10,
                  20, DARKGRAY);
 
-
-        int par = ((int)GetTime())%2;
-        DrawTextureRec(chico_img, (Rectangle) {256 * par, 0, 256, 256 }, (Vector2){2100, 100}, WHITE);
+        int par = ((int)GetTime()) % 2;
+        DrawTextureRec(chico_img, (Rectangle){256 * par, 0, 256, 256}, (Vector2){2100, 100}, WHITE);
         DrawText("Animações???", 2100, 10,
                  20, DARKGRAY);
 
-        if(!playing && player.x > 1800) {
+        if (!playing && player.x > 1800)
+        {
             PlaySound(song);
             playing = 1;
         }
         DrawText("Música?", 2700, 10,
                  20, DARKGRAY);
 
-
         DrawText("Projeto de IP OwO", 3200, 10,
                  40, BLACK);
 
         DrawText("Estamos ansiosos para ver\no que vocês vão criar.", 3200, 70,
                  30, BLUE);
-
 
         EndMode2D();
         EndDrawing();
