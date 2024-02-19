@@ -3,11 +3,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-
-void gameInterface() { 
-
-}
-
 float d2(Vector2 a, Vector2 b)
 {
     return ((a.x - b.x) * (a.x - b.x)) + ((a.y - b.y) * (a.y - b.y));
@@ -16,9 +11,7 @@ float d2(Vector2 a, Vector2 b)
 int main()
 {
     SetConfigFlags(FLAG_VSYNC_HINT);
-    InitWindow(0, 0, "raylib [core] example - mouse input");
-    if (!IsWindowFullscreen())
-        ToggleFullscreen();
+    InitWindow(1280, 720, "raylib [core] example - mouse input");
 
     const int screenWidth = GetScreenWidth();
     const int screenHeight = GetScreenHeight();
@@ -50,7 +43,6 @@ int main()
     char buf[500] = {0};
     float dprev = 0.0f;
 
-    //Movimentação
     while (!WindowShouldClose() && !IsKeyPressed(KEY_CAPS_LOCK))
     {
         double delta = GetTime() - time;
