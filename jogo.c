@@ -4,11 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "menu.h"
 
 int main()
 {
+
     SetConfigFlags(FLAG_VSYNC_HINT); // isso veio no codigo q os monitores deram, n mexi
-    InitWindow(1280, 720, "raylib [core] example - mouse input");
+    // InitMenu();                      // inicializa o menu
+    InitWindow(1280, 720, "Jogo"); // inicializa a janela do jogo
 
     // criacao dos inimigos
     Inimigo_solo capetinhas[Quant_inimigos];
@@ -30,6 +33,7 @@ int main()
     Rectangle player = {50, 50, 40, 40};   // Posição do jogador(também uma struct rectangle)
     const float velocidadePlayer = 500.0f; // Velocidade do jogador
 
+    // Define a taxa de quadros que o jogo vai rodar
     SetTargetFPS(60);
 
     bool apertaEspaco = false; // Variável que auxilia o jogador a só atirar uma vez a cada espaço pressionado
@@ -56,6 +60,26 @@ int main()
 
     while (!WindowShouldClose() && !IsKeyPressed(KEY_CAPS_LOCK))
     { // loop principal(passa por ele sl quantas vezes por frame)
+
+        /* UpdateMenu();
+        DrawMenu(); */
+        /*   GameState state = GetGameState();
+
+          switch (state)
+          {
+          case MENU:
+              break;
+          case GAME:
+
+              break;
+          case CREDITS:
+
+              break;
+          case EXIT:
+              CloseMenu();
+              return 0;
+          } */
+
         double delta = GetTime() - time;
         time = GetTime();
 
@@ -130,15 +154,24 @@ int main()
 
         // Atirar projéteis para frente
         if (IsKeyDown(KEY_R) && !apertaR)
+        {
             atiraFrente(projeteisFrente, &apertaR, &player);
+        }
         if (IsKeyReleased(KEY_R))
+        {
+
             apertaR = false; // isso aq é pra vc só consguir atirar uma vez a cada aperto da tecla
+        }
 
         // Atirar projéteis para baixo
         if (IsKeyDown(KEY_SPACE) && !apertaEspaco)
+        {
             atiraBaixo(projeteis, &apertaEspaco, &player);
+        }
         if (IsKeyReleased(KEY_SPACE))
+        {
             apertaEspaco = false;
+        }
 
         // Movimentação dos projéteis e checagem de colisões
         for (int n = 0; n < Quant_projeteis; n++)
@@ -270,7 +303,7 @@ int main()
         EndDrawing(); // finaliza o que tem q desenhar
     }
 
-    CloseWindow();
+    CloseWindow(); // fecha a janela
 
     return 0;
 }
