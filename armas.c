@@ -4,12 +4,11 @@
 void inicializaProjeteis(Projetil *baixo, Projetil *frente){
     for (int p = 0; p < Quant_projeteis; p++) {
         baixo[p].ativo = false;// inicializa todos os projeteis como inativos e da tamanho a eles
-        baixo[p].projetil_retan.height = 10;
-        baixo[p].projetil_retan.width = 10;
+        baixo[p].projetil_retan.height = 30;
+        baixo[p].projetil_retan.width = 30;
         frente[p].ativo = false;
-        frente[p].projetil_retan.height = 10;
-        frente[p].projetil_retan.width = 10;
-        
+        frente[p].projetil_retan.height = 30;
+        frente[p].projetil_retan.width = 30;
     }
 }
 
@@ -22,6 +21,7 @@ void atiraFrente(Projetil *frente, bool *teclaR, Rectangle *jogador){
             frente[proFrente].projetil_retan.y = jogador->y + 20;
             *teclaR = true;
             flagproje = 0;
+            
         }
     }
 }
@@ -36,5 +36,21 @@ void atiraBaixo(Projetil *baixo, bool *teclaEspaco, Rectangle *jogador){
             *teclaEspaco = true;
             flagproje = 0;
         }
+    }
+}
+
+void desenhaProjeteis(Projetil *projetil, Projetil *projetilFrente)
+{
+    for (int i = 0; i < Quant_projeteis; i++)
+    {
+        if (projetil[i].ativo)
+        {
+            DrawTexture(projetil[i].texturaProjetil, projetil[i].projetil_retan.x, projetil[i].projetil_retan.y, RAYWHITE);
+        }   
+
+        if (projetilFrente[i].ativo)
+        {
+            DrawTexture(projetilFrente[i].texturaProjetil, projetilFrente[i].projetil_retan.x, projetilFrente[i].projetil_retan.y, RAYWHITE);
+        }  
     }
 }

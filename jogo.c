@@ -12,7 +12,53 @@ int main()
     SetConfigFlags(FLAG_VSYNC_HINT); // isso veio no codigo q os monitores deram, n mexi
     // InitMenu();                      // inicializa o menu
     InitWindow(1280, 720, "Jogo"); // inicializa a janela do jogo
+    InitAudioDevice();
 
+    //carrega musica
+    Music mainMusic = LoadMusicStream("resources/audio/CyberpunkSonata.mp3");
+    mainMusic.looping = true;
+    SetMusicVolume(mainMusic, 3.0f);
+    PlayMusicStream(mainMusic);
+    
+    //texturas/assets
+    //carrega textura da nave espacial/jogador
+    Image naveImage = LoadImage("resources/textures/nave.png");
+    Image *naveImagePtr = &naveImage;
+    ImageResize(naveImagePtr, 90, 90);
+    Texture2D nave = LoadTextureFromImage(*naveImagePtr);
+
+    //carrega textura do morcego
+    Image morcegoImage = LoadImage("resources/textures/morcego.png");
+    Image *morcegoImagePtr = &morcegoImage;
+    ImageResize(morcegoImagePtr, 60, 60);
+    Texture2D morcego = LoadTextureFromImage(*morcegoImagePtr);
+
+    //carrega textura do capetinha
+    Image capetinhaImage = LoadImage("resources/textures/capetinha.png");
+    Image *capetinhaImagePtr = &capetinhaImage;
+    ImageResize(capetinhaImagePtr, 60, 60);
+    Texture2D capetinha = LoadTextureFromImage(*capetinhaImagePtr);
+
+    //carrega textura dos projeteis para baixo
+    Image projetilImage = LoadImage("resources/textures/arma.png");
+    Image *projetilImagePtr = &projetilImage;
+    ImageResize(projetilImagePtr, 50, 50);
+    Texture2D projetil = LoadTextureFromImage(*projetilImagePtr);
+
+    //carrega textura dos projeteis para frente
+    Image projetilFImage = LoadImage("resources/textures/armaFrente.png");
+    Image *projetilFImagePtr = &projetilFImage;
+    ImageResize(projetilFImagePtr, 50, 50);
+    Texture2D projetilF = LoadTextureFromImage(*projetilFImagePtr);
+
+    //carrega fundo principal do jogo
+    Image backgroundImage = LoadImage("resources/textures/mainbackground.png");
+    Image *backgroundImagePtr = &backgroundImage;
+    ImageResize(backgroundImagePtr, 1280, 720);
+    Texture2D background = LoadTextureFromImage(*backgroundImagePtr);
+
+    float scrolling = 0.0f;
+   
     // criacao dos inimigos
     Inimigo_solo capetinhas[Quant_inimigos];
     Inimigo_voa morceguinhos[Quant_inimigos];
@@ -25,6 +71,20 @@ int main()
     Projetil projeteisFrente[Quant_projeteis];
     const float velocidadeProjeteis = 800.0f;
     inicializaProjeteis(projeteis, projeteisFrente);
+
+    //garante que a textura vai ser adicionada a cada inimigo
+    for (int i = 0; i < Quant_inimigos; i++)
+    { 
+        morceguinhos[i].texturaMorcego = morcego;
+        capetinhas[i].texturaCapetinha = capetinha;
+    }
+
+    //garante que a textura vai ser adicionada a cada projetil
+    for (int i = 0; i < Quant_projeteis; i++)
+    { 
+        projeteis[i].texturaProjetil = projetil;
+        projeteisFrente[i].texturaProjetil = projetilF;
+    }
 
     const int screenWidth = GetScreenWidth(); // salvando duas variáveis para tamanho da tela
     const int screenHeight = GetScreenHeight();
@@ -61,11 +121,11 @@ int main()
     while (!WindowShouldClose() && !IsKeyPressed(KEY_CAPS_LOCK))
     { // loop principal(passa por ele sl quantas vezes por frame)
 
-        /* UpdateMenu();
-        DrawMenu(); */
-        /*   GameState state = GetGameState();
+        /*UpdateMenu(); */
+        /*DrawMenu(); 
+            GameState state = GetGameState();
 
-          switch (state)
+          switch (state) 
           {
           case MENU:
               break;
@@ -77,8 +137,10 @@ int main()
               break;
           case EXIT:
               CloseMenu();
-              return 0;
+              return 0; 
           } */
+        
+        UpdateMusicStream(mainMusic);
 
         double delta = GetTime() - time;
         time = GetTime();
@@ -103,6 +165,7 @@ int main()
         {
             tempoCapetinhas += alterarTempoCapetinha;
             spawnaCapetinha(capetinhas, alturaSolo);
+            
         }
 
         // spawnador de inimigos voadores
@@ -155,7 +218,9 @@ int main()
         // Atirar projéteis para frente
         if (IsKeyDown(KEY_R) && !apertaR)
         {
+
             atiraFrente(projeteisFrente, &apertaR, &player);
+
         }
         if (IsKeyReleased(KEY_R))
         {
@@ -270,9 +335,21 @@ int main()
             }
         }
 
-        DrawRectangle(0, screenHeight - alturaSolo, screenWidth, alturaSolo, DARKBLUE); // chao
+        DrawRectangle(0, screenHeight - alturaSolo, screenWidth, alturaSolo, BLANK); // chao
         BeginDrawing();                                                                 // aqui começa a desenhar na tela
         ClearBackground(RAYWHITE);
+
+        //tentei fazer o fundo se mexer
+        scrolling -= 0.1f;
+        if (scrolling <= -background.width/15) scrolling = 0;
+        DrawTextureEx(background, (Vector2){ scrolling, 0 }, 0.0f, 1.0f, WHITE);
+        DrawTextureEx(background, (Vector2){ background.width*2 + scrolling, 0 }, 0.0f, 1.0f, WHITE);
+
+        DrawTexture(nave, player.x, player.y, RAYWHITE);
+
+        desenhaMorceguinhos(morceguinhos);
+        desenhaCapetinha(capetinhas);
+        desenhaProjeteis(projeteis, projeteisFrente);
 
         sprintf(coordenadas, "player (%02.02f, %02.02f)", player.x, player.y); // isso aqui mostra as coordenadas do jogador, tiraremos futuramente
         DrawText(coordenadas, 10, 10, 20, DARKGRAY);
@@ -282,26 +359,34 @@ int main()
         DrawText(pontuacaoTexto, screenWidth - 280, 10, 60, DARKBLUE);
 
         // Desenho dos objetos na tela
-        DrawRectangleRec(player, RED); // jogador
+        DrawRectangleRec(player, BLANK); // jogador
 
         for (int l = 0; l < Quant_projeteis; l++)
         { // projeteis do jogador
             if (projeteis[l].ativo)
-                DrawRectangleRec(projeteis[l].projetil_retan, BLACK);
+                DrawRectangleRec(projeteis[l].projetil_retan, BLANK);
             if (projeteisFrente[l].ativo)
-                DrawRectangleRec(projeteisFrente[l].projetil_retan, DARKPURPLE);
+                DrawRectangleRec(projeteisFrente[l].projetil_retan, BLANK);
         }
 
         for (int k = 0; k < Quant_inimigos; k++)
         {
             if (capetinhas[k].ativo)
-                DrawRectangleRec(capetinhas[k].solo_retan, GREEN);
+                DrawRectangleRec(capetinhas[k].solo_retan, BLANK);
             if (morceguinhos[k].ativo)
-                DrawRectangleRec(morceguinhos[k].voa_retan, YELLOW);
+                DrawRectangleRec(morceguinhos[k].voa_retan, BLANK);
         }
 
         EndDrawing(); // finaliza o que tem q desenhar
     }
+
+    UnloadMusicStream(mainMusic);         
+    CloseAudioDevice();
+
+    UnloadTexture(nave);
+    UnloadTexture(background);
+    UnloadTexture(morcego);
+    UnloadTexture(capetinha);
 
     CloseWindow(); // fecha a janela
 
